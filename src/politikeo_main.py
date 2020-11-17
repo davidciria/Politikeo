@@ -16,7 +16,7 @@ class PolitikeoStreamer(tweepy.StreamListener):
       
       # Processament del partit politic del usuari.
       # TO DO
-      img_partit = 'prova.jpg'
+      img_partit = 'prova.jpg' #Imatge generada.
 
       # Resposta del tweet amb la imatge resultant.
       self.api.update_with_media(img_partit,status='hello world'+' @'+tweet.user.screen_name, in_reply_to_status_id = tweet.id)
