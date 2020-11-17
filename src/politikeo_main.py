@@ -16,10 +16,12 @@ class PolitikeoStreamer(tweepy.StreamListener):
       
       # Processament del partit politic del usuari.
       # TO DO
+      # Decision model.
+      # If not --> Fasttext.
       img_partit = 'prova.jpg' #Imatge generada.
 
       # Resposta del tweet amb la imatge resultant.
-      self.api.update_with_media(img_partit,status='hello world'+' @'+tweet.user.screen_name, in_reply_to_status_id = tweet.id)
+      self.api.update_with_media(img_partit,status='hello world'+' @' + tweet_scrren_user, in_reply_to_status_id = tweet_id)
 
     def on_error(self, status):
       # Si succeix un error.
