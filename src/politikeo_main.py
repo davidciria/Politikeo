@@ -1,9 +1,9 @@
 import tweepy
 import json
-import logging
 import numpy as np
 from config import create_api
 import time
+import sys
 
 class PolitikeoStreamer(tweepy.StreamListener):
     def __init__(self, api):
@@ -20,14 +20,15 @@ class PolitikeoStreamer(tweepy.StreamListener):
       img_partit = 'prova.jpg'
 
       # Resposta del tweet amb la imatge resultant.
-      api.update_with_media(img_partit,status='hello world'+' @'+tweet.user.screen_name, in_reply_to_status_id = tweet.id)
+      self.api.update_with_media(img_partit,status='hello world'+' @'+tweet.user.screen_name, in_reply_to_status_id = tweet.id)
 
     def on_error(self, status):
       # Si succeix un error.
       print("Error detected")
 
-def main(screen_user):
-    if( np.isnan(screen_user) ): screen_user = '@dacima_upf'
+def main():
+    if( len(sys.argv) < 2 ): screen_user = '@dacima_upf'
+    screen_user = sys.argv[1]
     api = create_api()
     tweets_listener = PolitikeoStreamer(api)
     stream = tweepy.Stream(api.auth, tweets_listener)
