@@ -3,7 +3,6 @@ import json
 import numpy as np
 from config import create_api
 import time
-import sys
 
 class PolitikeoStreamer(tweepy.StreamListener):
     def __init__(self, api):
@@ -27,12 +26,16 @@ class PolitikeoStreamer(tweepy.StreamListener):
       print("Error detected")
 
 def main():
-    if( len(sys.argv) < 2 ): screen_user = '@dacima_upf'
-    screen_user = sys.argv[1]
-    api = create_api()
+    api = create_api() # Creem la api de twitter.
+
+    # Obtenim el nostre nom d'usuari.
+    screen_user = api.me().screen_name
+    print("Current user in credentials: @"+screen_user)
+
+    # Creem un listener per trackejar els usuaris que ens mencionin.
     tweets_listener = PolitikeoStreamer(api)
     stream = tweepy.Stream(api.auth, tweets_listener)
-    stream.filter(track=[screen_user])
+    stream.filter(track=[screen_user]) # Trackejem amb un stream el nostre nom d'usuari.
     
 
 if __name__ == "__main__":
