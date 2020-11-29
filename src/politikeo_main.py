@@ -2,7 +2,14 @@ import tweepy
 import json
 import numpy as np
 from config import create_api
-import time
+import time 
+from fastTextModel import FastTextModel
+from decisionModel import DecisionModel
+import nltk
+import os
+#Download nltk stopwords.
+if 'stopwords' not in os.listdir( nltk.data.find("corpora") ):
+  nltk.download('stopwords')
 
 class PolitikeoStreamer(tweepy.StreamListener):
     def __init__(self, api):
@@ -28,6 +35,7 @@ class PolitikeoStreamer(tweepy.StreamListener):
       print("Error detected")
 
 def main():
+
     api = create_api() # Creem la api de twitter.
 
     # Obtenim el nostre nom d'usuari.
@@ -35,9 +43,23 @@ def main():
     print("Current user in credentials: @"+screen_user)
 
     # Creem un listener per trackejar els usuaris que ens mencionin.
-    tweets_listener = PolitikeoStreamer(api)
-    stream = tweepy.Stream(api.auth, tweets_listener)
-    stream.filter(track=[screen_user]) # Trackejem amb un stream el nostre nom d'usuari.
+    #tweets_listener = PolitikeoStreamer(api)
+    #stream = tweepy.Stream(api.auth, tweets_listener)
+    #stream.filter(track=[screen_user]) # Trackejem amb un stream el nostre nom d'usuari.
+
+    userDecisionModel = DecisionModel("roma_gallardo", api)
+    """
+    emojiScores = list(userDecisionModel.emojiScores())
+    keywordsScores = list(userDecisionModel.keywordsScores())
+    finalScores = np.add(emojiScores, keywordsScores)
+    print(emojiScores)
+    print(keywordsScores)
+    print(finalScores)
+    """
+
+    fmodel = FastTextModel("Mike88056261", api)
+
+    fmodel.getScores()
     
 
 if __name__ == "__main__":
