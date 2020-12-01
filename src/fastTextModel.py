@@ -54,5 +54,4 @@ class FastTextModel:
         
         sum_scores = np.sum([*partiesCountDict.values()])
 
-        for k, v in partiesCountDict.items():
-            print(k, v/sum_scores)
+        return [(k, v/sum_scores) for k, v in partiesCountDict.items()]

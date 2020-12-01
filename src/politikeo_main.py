@@ -24,7 +24,16 @@ class PolitikeoStreamer(tweepy.StreamListener):
       # Processament del partit politic del usuari.
       # TO DO
       # Decision model.
-      # If not --> Fasttext.
+      userDecisionModel = DecisionModel(tweet_scrren_user, self.api)
+      emojisScores = list(userDecisionModel.emojisScores())
+      keywordsScores = list(userDecisionModel.keywordsScores())
+      decisionModelScores = np.add(emojisScores, keywordsScores)
+      print(decisionModelScores)
+      # If is not enought --> Fasttext.
+      fastTextModel = FastTextModel(tweet_scrren_user, self.api)
+      fastTextModelScores = fastTextModel.getScores()
+      print(fastTextModelScores)
+
       img_partit = 'prova.jpg' #Imatge generada.
 
       # Resposta del tweet amb la imatge resultant.
@@ -43,23 +52,9 @@ def main():
     print("Current user in credentials: @"+screen_user)
 
     # Creem un listener per trackejar els usuaris que ens mencionin.
-    #tweets_listener = PolitikeoStreamer(api)
-    #stream = tweepy.Stream(api.auth, tweets_listener)
-    #stream.filter(track=[screen_user]) # Trackejem amb un stream el nostre nom d'usuari.
-
-    userDecisionModel = DecisionModel("roma_gallardo", api)
-    """
-    emojiScores = list(userDecisionModel.emojiScores())
-    keywordsScores = list(userDecisionModel.keywordsScores())
-    finalScores = np.add(emojiScores, keywordsScores)
-    print(emojiScores)
-    print(keywordsScores)
-    print(finalScores)
-    """
-
-    fmodel = FastTextModel("Mike88056261", api)
-
-    fmodel.getScores()
+    tweets_listener = PolitikeoStreamer(api)
+    stream = tweepy.Stream(api.auth, tweets_listener)
+    stream.filter(track=[screen_user]) # Trackejem amb un stream el nostre nom d'usuari.
     
 
 if __name__ == "__main__":

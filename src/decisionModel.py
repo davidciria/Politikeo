@@ -87,7 +87,7 @@ class DecisionModel:
         return scores.values()
     
 
-    def emojiScores(self):
+    def emojisScores(self):
         # Vox, PP, CS, PSOE, UP.
         emojiList = self.loadPickleObject("./data/emojiList.pkl")
 
