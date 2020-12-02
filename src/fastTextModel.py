@@ -18,10 +18,16 @@ class FastTextModel:
 
     #Function to clean the text of a tweet.
     def clean_tweet(self, text):
-        #clean_text = re.sub("@.*:", "", text) #This do not improve performance.
-        clean_text = re.sub("@.*:", "", text) #This do not improve performance.
-        clean_text = re.sub("RT", "", clean_text)
-        clean_text = re.sub("\n", " ", clean_text)
+        text = re.sub(r"http\S+", "", text)
+        text = re.sub(r"/", "", text)
+        text = re.sub(r"RT", "", text)
+        text = re.sub("\n+", ' ', text)
+        text = re.sub("\r+", ' ', text)
+        #text = re.sub(r"@.*", "", text) #This do not improve performance.
+        #clean_text = re.sub("RT", "", clean_text)
+        #clean_text = re.sub("\n", " ", clean_text)
+        #clean_text = re.sub("/", "", clean_text)
+        #clean_text = re.sub(" +", " ", clean_text)
         #Separate emojis from words.
         """
         sep_emojis_text = ""
@@ -32,14 +38,13 @@ class FastTextModel:
                 sep_emojis_text+=c
         #This do not improve performance.
         """
-        return clean_text
+        return text
 
     def getScores(self):
         partiesCountDict = {}
         timeline = self.api.user_timeline(screen_name = self.screen_user, count = 200, include_rts = True,tweet_mode='extended')
         for tweet in timeline:
             parties, scores = self.model.predict(self.clean_tweet(tweet.full_text), k=5)
-            print(scores, parties)
             #if scores[0] > 0.7:
             #    if parties[0] in partiesCountDict:
             #        partiesCountDict[parties[0]] += 1
