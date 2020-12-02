@@ -54,7 +54,7 @@ class PolitikeoStreamer(tweepy.StreamListener):
       tweet_screen_user = tweet.user.screen_name
       if tweet.user.screen_name != self.me.screen_name:
         users_called = re.findall(r'(?<=^|(?<=[^a-zA-Z0-9-.]))@([A-Za-z]+[A-Za-z0-9-]+)', tweet.text)
-        users_called_processed = [u for u in list(set(users_called)) if u!=tweet.user.screen_name and self.me.screen_name]  #Eliminem duplicats i obtenim usuaris diferents.
+        users_called_processed = [u for u in list(set(users_called)) if u!=tweet.user.screen_name and u!=self.me.screen_name]  #Eliminem duplicats i obtenim usuaris diferents.
         # Processament del partit politic del usuari.
         predicted_party_label = self.predict_user(tweet_screen_user)
 
@@ -70,10 +70,10 @@ class PolitikeoStreamer(tweepy.StreamListener):
           predicted_party_label = self.predict_user(user)
           #No hem pogunt determinar la ideologia de l'usuari.
           if predicted_party_label is None:
-            self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user + " for " + '@' + user, in_reply_to_status_id = tweet_id)
+            self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user + " para el usuario " + '@' + user, in_reply_to_status_id = tweet_id)
           else:
             #Responem amb la fotografia del partit.
-            self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user + " for " + '@' + user, in_reply_to_status_id = tweet_id)
+            self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user + " para el usuario " + '@' + user, in_reply_to_status_id = tweet_id)
     
     def on_error(self, status):
       # Si succeix un error.
