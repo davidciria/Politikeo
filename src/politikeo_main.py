@@ -8,6 +8,7 @@ from decisionModel import DecisionModel
 import nltk
 import os
 import re
+from datetime import datetime, timedelta
 #Download nltk stopwords.
 if 'stopwords' not in os.listdir( nltk.data.find("corpora") ):
   nltk.download('stopwords')
@@ -16,6 +17,7 @@ class PolitikeoStreamer(tweepy.StreamListener):
     def __init__(self, api):
       self.api = api
       self.me = api.me()
+      self.log = self.load_log()
 
     def predict_user(self, screen_user):
       #L'ordre dels partits en el model de decisio es Vox, PP, Ciudadanos, PSOE, UP.
@@ -48,11 +50,46 @@ class PolitikeoStreamer(tweepy.StreamListener):
       parties_photos = {"vox": "./data/media/vox.png", "pp": "./data/media/pp.png", "cs": "./data/media/cs.png", "psoe": "./data/media/psoe.png", "up": "./data/media/up.png"}
       return parties_photos[partyLabel]
 
+    def load_log(self):
+      if os.path.isfile('./data/log.txt'):
+        log_file = open('./data/log.txt', 'r')
+        lines = log_file.readlines()
+        user_log_dict = {}
+        for line in lines:
+            user, time = line.strip().split(",")
+            user_log_dict[user] = time
+        return user_log_dict
+      else:
+        return {}
+
+    def save_log(self):
+      log_file = open('./data/log.txt', 'w')
+      for user in self.log:
+        log_file.write(user+","+self.log[user]+"\n")
+      return True
+    
+    def user_allowed(self, tweet_screen_user):
+      if tweet_screen_user in self.log:
+        last_time_str = self.log[tweet_screen_user]
+        last_time = datetime.strptime(last_time_str, '%Y-%m-%d %H:%M:%S.%f')
+        now = datetime.now()
+        if ((now - last_time) >= timedelta(hours=1)):
+          self.log[tweet_screen_user] = str(now)
+          self.save_log() #Update log.
+          return True
+        else:
+          return False
+      else:
+        now = datetime.now()
+        self.log[tweet_screen_user] = str(now)
+        self.save_log()
+        return True
+
     def on_status(self, tweet):
       # Informacio del tweet que ens ha mencionat.
       tweet_id = tweet.id
       tweet_screen_user = tweet.user.screen_name
-      if tweet.user.screen_name != self.me.screen_name:
+      if tweet.user.screen_name != self.me.screen_name: #and self.user_allowed(tweet_screen_user):
         users_called = re.findall(r'(?<=^|(?<=[^a-zA-Z0-9-.]))@([A-Za-z]+[A-Za-z0-9-]+)', tweet.text)
         users_called_processed = [u for u in list(set(users_called)) if u!=tweet.user.screen_name and u!=self.me.screen_name]  #Eliminem duplicats i obtenim usuaris diferents.
         # Processament del partit politic del usuari.
