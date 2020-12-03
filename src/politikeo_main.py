@@ -30,7 +30,7 @@ class PolitikeoStreamer(tweepy.StreamListener):
       decisionModelScores.sort(key=lambda tup: tup[0], reverse=True) #Ordenem descendentment.
       print(decisionModelScores)
       #Si tenim un score significant. El primer es el doble que el segon.
-      if (decisionModelScores[0][0] >= 0.25) and (2*decisionModelScores[1][0] <= decisionModelScores[0][0]):
+      if (decisionModelScores[0][0] >= 0.20) and (2*decisionModelScores[1][0] <= decisionModelScores[0][0]):
         #Retornem el partit politic.
         print("DecisionModelPrediction for @"+screen_user)
         print(decisionModelScores)
