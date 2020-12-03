@@ -32,13 +32,18 @@ class PolitikeoStreamer(tweepy.StreamListener):
       #Si tenim un score significant. El primer es el doble que el segon.
       if (decisionModelScores[0][0] >= 0.25) and (2*decisionModelScores[1][0] <= decisionModelScores[0][0]):
         #Retornem el partit politic.
+        print("DecisionModelPrediction for @"+screen_user)
+        print(decisionModelScores)
+        print("\n")
         return decisionModelScores[0][1]
       else:
         #Apliquem fasttext.
         fastTextModel = FastTextModel(screen_user, self.api)
         fastTextModelScores = fastTextModel.getScores()
         fastTextModelScores.sort(key=lambda tup: tup[1], reverse=True)
+        print("FasttextPrediction for @"+screen_user)
         print(fastTextModelScores)
+        print("\n")
         #Si el score de fasttext es major del 40%, retornem la prediccio.
         if(fastTextModelScores[0][1] >= 0.4):
           return re.sub(r"__label__", "", fastTextModelScores[0][0])
@@ -89,28 +94,30 @@ class PolitikeoStreamer(tweepy.StreamListener):
       # Informacio del tweet que ens ha mencionat.
       tweet_id = tweet.id
       tweet_screen_user = tweet.user.screen_name
-      if tweet.user.screen_name != self.me.screen_name: #and self.user_allowed(tweet_screen_user):
-        users_called = re.findall(r'(?<=^|(?<=[^a-zA-Z0-9-.]))@([A-Za-z]+[A-Za-z0-9-]+)', tweet.text)
+      if tweet.user.screen_name.lower() != self.me.screen_name.lower(): #and self.user_allowed(tweet_screen_user.lower()):
+        users_called = re.findall(r'(?<=^|(?<=[^a-zA-Z0-9-.]))@([A-Za-z0-9-_]+)', tweet.text)
         users_called_processed = [u for u in list(set(users_called)) if u!=tweet.user.screen_name and u!=self.me.screen_name]  #Eliminem duplicats i obtenim usuaris diferents.
-        # Processament del partit politic del usuari.
-        predicted_party_label = self.predict_user(tweet_screen_user)
+        # Processament dels usuaris que ha mencionat.
+        if len(users_called_processed) >= 1:
+          #Prediccio d'usuaris mencionats.
+          for user in users_called_processed:
+            predicted_party_label = self.predict_user(user)
+            #No hem pogunt determinar la ideologia de l'usuari.
+            if predicted_party_label is None:
+              self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user + " Nuestra prediccion para el usuario " + '@/' + user, in_reply_to_status_id = tweet_id)
+            else:
+              #Responem amb la fotografia del partit.
+              self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user + " Nuestra prediccion para el usuario " + '@/' + user, in_reply_to_status_id = tweet_id)
+        else: # Processament del partit politic del usuari que ha mencionat el bot.
+          predicted_party_label = self.predict_user(tweet_screen_user)
 
-        #No hem pogunt determinar la ideologia de l'usuari.
-        if predicted_party_label is None:
-          self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user, in_reply_to_status_id = tweet_id)
-        else:
-          #Responem amb la fotografia del partit.
-          self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user, in_reply_to_status_id = tweet_id)
-        
-        #Prediccio d'usuaris mencionats.
-        for user in users_called_processed:
-          predicted_party_label = self.predict_user(user)
           #No hem pogunt determinar la ideologia de l'usuari.
           if predicted_party_label is None:
-            self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user + " para el usuario " + '@' + user, in_reply_to_status_id = tweet_id)
+            self.api.update_with_media("./data/media/default.png",status='@' + tweet_screen_user, in_reply_to_status_id = tweet_id)
           else:
             #Responem amb la fotografia del partit.
-            self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user + " para el usuario " + '@' + user, in_reply_to_status_id = tweet_id)
+            self.api.update_with_media(self.getPhotoDir(predicted_party_label),status='@' + tweet_screen_user, in_reply_to_status_id = tweet_id)
+          
     
     def on_error(self, status):
       # Si succeix un error.

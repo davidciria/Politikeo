@@ -44,7 +44,8 @@ class FastTextModel:
         partiesCountDict = {}
         timeline = self.api.user_timeline(screen_name = self.screen_user, count = 200, include_rts = True,tweet_mode='extended')
         for tweet in timeline:
-            parties, scores = self.model.predict(self.clean_tweet(tweet.full_text), k=5)
+            text = tweet.retweeted_status.full_text if tweet.full_text.startswith("RT @") else tweet.full_text
+            parties, scores = self.model.predict(self.clean_tweet(text), k=5)
             #if scores[0] > 0.7:
             #    if parties[0] in partiesCountDict:
             #        partiesCountDict[parties[0]] += 1
