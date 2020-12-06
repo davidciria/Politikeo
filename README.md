@@ -14,6 +14,8 @@ Bot de Twitter que predice tu identidad política a partir de tu actividad. Se a
 - Escribe un tweet mencionando la cuenta @PolitikeoV junto a otros usuarios y las cuentas del resto de usuarios serán analizadas.<br>
 **Ejemplo:** "¿Que ideologia pueden tener? @PolitikeoV @Ejemplo1 @Ejemplo2"
 
+Hemos añadido la opción para limitar las peticiones al bot de un mismo usuario cada 30 minutos. Se puede activar cambiando el boleano de la función user_allowed del main por True. En el caso de activarla se creará un fichero ('./data/log.txt') donde se almacenará la blacklist.
+
 ## Cargar keys de la API de Twitter
 
 Las api keys se leen desde un fichero externo llamado api_keys.txt que debe situarse en la carpeta src → data. El formato del fichero debe ser el siguiente
