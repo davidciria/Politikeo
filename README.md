@@ -14,8 +14,6 @@ Bot de Twitter que predice tu identidad política a partir de tu actividad. Se a
 - Escribe un tweet mencionando la cuenta @PolitikeoV junto a otros usuarios y las cuentas del resto de usuarios serán analizadas.<br>
 **Ejemplo:** "¿Que ideologia pueden tener? @PolitikeoV @Ejemplo1 @Ejemplo2"
 
-**Creadores:** Àngel Herrero, Iair Mowszet y David Ciria
-
 ## Cargar keys de la API de Twitter
 
 Las api keys se leen desde un fichero externo llamado api_keys.txt que debe situarse en la carpeta src → data. El formato del fichero debe ser el siguiente
@@ -40,3 +38,5 @@ access_token_secret,aqui_el_valor_de_la_access_token_secret
   - **config.py:** Código relacionado con la configuración de la api.
   - **decisionModel.py:** Código relacionado con el procesamiento del modelo de decisión.
   - **fastTextModel.py:** Código relacionado con el procesamiento del modelo de fastText.
+
+**Creadores:** Àngel Herrero, Iair Mowszet y David Ciria
