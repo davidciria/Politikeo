@@ -23,21 +23,6 @@ class FastTextModel:
         text = re.sub(r"RT", "", text)
         text = re.sub("\n+", ' ', text)
         text = re.sub("\r+", ' ', text)
-        #text = re.sub(r"@.*", "", text) #This do not improve performance.
-        #clean_text = re.sub("RT", "", clean_text)
-        #clean_text = re.sub("\n", " ", clean_text)
-        #clean_text = re.sub("/", "", clean_text)
-        #clean_text = re.sub(" +", " ", clean_text)
-        #Separate emojis from words.
-        """
-        sep_emojis_text = ""
-        for c in clean_text:
-            if c in emoji.UNICODE_EMOJI:
-                sep_emojis_text+=' '+c+' '
-            else:
-                sep_emojis_text+=c
-        #This do not improve performance.
-        """
         return text
 
     def getScores(self):
@@ -46,13 +31,8 @@ class FastTextModel:
         for tweet in timeline:
             text = tweet.retweeted_status.full_text if tweet.full_text.startswith("RT @") else tweet.full_text
             parties, scores = self.model.predict(self.clean_tweet(text), k=5)
-            #if scores[0] > 0.7:
-            #    if parties[0] in partiesCountDict:
-            #        partiesCountDict[parties[0]] += 1
-            #    else:
-            #        partiesCountDict[parties[0]] = 1
             for p,s in zip(parties, scores):
-                if s > 0.6:
+                if s > 0.6: #Si el tweet te una probabilitat de mes del 60% de ser del partit actual.
                     if p in partiesCountDict:
                         partiesCountDict[p] += s
                     else:
