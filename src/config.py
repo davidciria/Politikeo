@@ -6,17 +6,30 @@ import tweepy
 logger = logging.getLogger()
 
 def create_api():
-    #Variables entorn per llegir les keys.
-    """
-    consumer_key = "wnhgSExHjio16XRyg6Vz46ZYP"#os.getenv("CONSUMER_KEY")
-    consumer_secret = "vVGBXEQMi9geU28yj4MjPS741YdEKhysTXuTAK9Ymxwdpl90bP"#os.getenv("CONSUMER_SECRET")
-    access_token = "1222889545701580800-WpL4G8ZEsz5OKXkGGBmuDI60oOxLNt"#os.getenv("ACCESS_TOKEN")
-    access_token_secret = "HcjGOyLbT3ETf4V2bjVaXoxGL7o15v79VvfZI2ASVYUFG"#os.getenv("ACCESS_TOKEN_SECRET")
-    """
-    consumer_key = "I0HQQB4aEyljovIhDWemu8N6I"#os.getenv("CONSUMER_KEY")
-    consumer_secret = "NMBKJXKtD95qOJRtHXr241VkTqfcO1P9MiJXEmQKBFkrYqPFwx"#os.getenv("CONSUMER_SECRET")
-    access_token = "1328431351259869184-VBQDCqEBMt9dpXKIPwXtoBgjvePP2q"#os.getenv("ACCESS_TOKEN")
-    access_token_secret = "ixpIugMncCrcgQ6MF0Va9RTEwbdRtQsG7gkvz8XGQNMHi"#os.getenv("ACCESS_TOKEN_SECRET")
+    #Funcio per llegir les keys del fitxer api_keys.txt que ha d'estar situat al directori data.
+    def load_keys():
+      if os.path.isfile('./data/api_keys.txt'):
+        log_file = open('./data/api_keys.txt', 'r')
+        lines = log_file.readlines()
+        keys_dict = {}
+        for line in lines:
+            key, value = line.strip().split(",")
+            keys_dict[key] = value
+        return keys_dict
+      else:
+        print("Create api_keys.txt file in data directory")
+        print("The format should be the following:")
+        print("consumer_key,insert_here_your_consumer_key")
+        print("consumer_secret,insert_here_your_consumer_secret")
+        print("access_token,insert_here_your_access_token")
+        print("access_token_secret,insert_here_your_access_token_secret")
+        return {}
+
+    keys_dict = load_keys()
+    consumer_key = keys_dict["consumer_key"]
+    consumer_secret = keys_dict["consumer_secret"]
+    access_token = keys_dict["access_token"]
+    access_token_secret = keys_dict["access_token_secret"]
     
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)

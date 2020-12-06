@@ -28,6 +28,8 @@ class FastTextModel:
     def getScores(self):
         partiesCountDict = {}
         timeline = self.api.user_timeline(screen_name = self.screen_user, count = 200, include_rts = True,tweet_mode='extended')
+        #Si l'usuari te menys de 100 tweets (50% dels que analitzem) no efectuem una resposta.
+        if len(timeline) <= 100: return []
         for tweet in timeline:
             text = tweet.retweeted_status.full_text if tweet.full_text.startswith("RT @") else tweet.full_text
             parties, scores = self.model.predict(self.clean_tweet(text), k=5)
