@@ -19,12 +19,12 @@ Bot de Twitter que predice tu identidad política a partir de tu actividad. Se a
 ## Cargar keys de la API de Twitter
 
 Las api keys se leen desde un fichero externo llamado api_keys.txt que debe situarse en la carpeta src → data. El formato del fichero debe ser el siguiente
-``
+~~~
 api_keys.txt
 consumer_key,aqui_el_valor_de_la_consumer_key
 consumer_secret,aqui_el_valor_de_la_consumer_secret
 access_token,aqui_el_valor_de_la_access_token
 access_token_secret,aqui_el_valor_de_la_access_token_secret
-``
+~~~
 
 
