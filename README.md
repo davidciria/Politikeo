@@ -8,7 +8,7 @@ Bot de Twitter que predice tu identidad política a partir de tu actividad. Se a
 
 **Siguenos en twitter:** @PolitikeoV https://twitter.com/PolitikeoV
 
-## Uso del bot:
+## Uso del bot
 - Escribe un tweet mencionando la cuenta @PolitikeoV y tu cuenta será analizada.<br>
 **Ejemplo:** "¿De que partido parezco ser? @PolitikeoV"
 - Escribe un tweet mencionando la cuenta @PolitikeoV junto a otros usuarios y las cuentas del resto de usuarios serán analizadas.<br>
