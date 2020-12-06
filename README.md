@@ -27,4 +27,17 @@ access_token,aqui_el_valor_de_la_access_token
 access_token_secret,aqui_el_valor_de_la_access_token_secret
 ~~~
 
-
+## Organización del código
+~~~
+**db_utils:** Código relacionado con el crawling y la creación de los modelos.
+  - **Crawling.ipynb:** Código relacionado con el crawling de los tweets de los distintos partidos.
+  - **Emojis.ipynb:** Código relacionado con la obtención de los emojis más significantes de cada partido.
+  - **Keywords.ipynb:** Código relacionado con la obtención de las keywords más significantes de cada partido.
+  - **fastTextModel.ipynb:** Código relacionado con la creación del modelo de fastText.
+  
+**src:** Código final del bot. Para que el bot funcione, es necesario rellenar las api keys de twitter en el fichero api_keys.txt (src → data).
+  - **politikeo_main.py:** Se encuentra el main. Archivo a ejecutar para poner en marcha el bot. Se encuentra la logica general.
+  - **config.py:** Código relacionado con la configuración de la api.
+  - **decisionModel.py:** Código relacionado con el procesamiento del modelo de decisión.
+  - **fastTextModel.py:** Código relacionado con el procesamiento del modelo de fastText.
+~~~
