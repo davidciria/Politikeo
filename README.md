@@ -1,5 +1,5 @@
 # Politikeo
-Bot de Twitter que predice tu identidad política a partir de tu actividad. Se asegura el funcionamiento correcto únicamente con usuarios que tuitean en español. Actualmente el bot es capaç de situar a un usuario entre los siguientes partidos políticos:
+Bot de Twitter que predice tu identidad política a partir de tu actividad. Se asegura el funcionamiento correcto únicamente con usuarios que tuitean en español. Actualmente el bot es capaz de situar a un usuario entre los siguientes partidos políticos:
 - Unidas Podemos
 - Partido Socialista Obrero Español (PSOE)
 - Ciudadanos (CS)
