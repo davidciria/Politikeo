@@ -28,7 +28,7 @@ access_token_secret,aqui_el_valor_de_la_access_token_secret
 ~~~
 
 ## Organización del código
-~~~
+
 **db_utils:** Código relacionado con el crawling y la creación de los modelos.
   - **Crawling.ipynb:** Código relacionado con el crawling de los tweets de los distintos partidos.
   - **Emojis.ipynb:** Código relacionado con la obtención de los emojis más significantes de cada partido.
@@ -40,4 +40,3 @@ access_token_secret,aqui_el_valor_de_la_access_token_secret
   - **config.py:** Código relacionado con la configuración de la api.
   - **decisionModel.py:** Código relacionado con el procesamiento del modelo de decisión.
   - **fastTextModel.py:** Código relacionado con el procesamiento del modelo de fastText.
-~~~
