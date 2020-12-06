@@ -1,4 +1,4 @@
-consumer_key,key_value
-consumer_secret,key_value
-access_token,key_value
-access_token_secret,key_values
+consumer_key,I0HQQB4aEyljovIhDWemu8N6I
+consumer_secret,NMBKJXKtD95qOJRtHXr241VkTqfcO1P9MiJXEmQKBFkrYqPFwx
+access_token,1328431351259869184-VBQDCqEBMt9dpXKIPwXtoBgjvePP2q
+access_token_secret,ixpIugMncCrcgQ6MF0Va9RTEwbdRtQsG7gkvz8XGQNMHi
